@@ -1,0 +1,29 @@
+name: 'Validate .ipa'
+description: 'TODO'
+inputs:
+  ipa_path:
+    description: 'TODO'
+    required: true
+  appstore_issuer:
+    description: 'TODO'
+    required: true
+  appstore_key_id:
+    description: 'TODO'
+    required: true
+  appstore_key_content:
+    description: 'TODO'
+    required: true
+runs:
+  using: 'composite'
+  steps:
+    - shell: sh
+      run: |
+        mkdir -p "$HOME/.appstoreconnect/private_keys"
+        echo "${{ inputs.appstore_key_content }}" > "$HOME/.appstoreconnect/private_keys/AuthKey_${{ inputs.appstore_key_id }}.p8"
+    - shell: sh
+      run: |
+        xcrun altool \
+          --validate-app \
+          --file "${{ inputs.ipa_path }}" \
+          --apiKey "${{ inputs.appstore_key_id }}" \
+          --apiIssuer "${{ inputs.appstore_issuer }}"
