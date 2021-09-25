@@ -4,6 +4,10 @@ inputs:
   ipa_path:
     description: 'TODO'
     required: true
+  platform:
+    description: 'macos, ios or appletvos'
+    required: true
+    default: 'ios'
   appstore_issuer:
     description: 'TODO'
     required: true
@@ -25,5 +29,6 @@ runs:
         xcrun altool \
           --validate-app \
           --file "${{ inputs.ipa_path }}" \
+          --type ${{ inputs.platform }} \
           --apiKey "${{ inputs.appstore_key_id }}" \
           --apiIssuer "${{ inputs.appstore_issuer }}"
